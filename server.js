@@ -135,7 +135,13 @@ const EquipmentsType = new GraphQLObjectType({
     description: 'Types of equipment (e.g. machine, dumbbell, barbell.....)',
     fields: () => ({
         id: { type: GraphQLNonNull(GraphQLInt) },
-        name: { type: GraphQLNonNull(GraphQLString) }
+        name: { type: GraphQLNonNull(GraphQLString) },
+        movements: {
+            type: new GraphQLList(MovementsType),
+            resolve: (equipment) => {
+                return movements.filter(movement => equipment.id === movement.equipmentType)
+            }
+        }
     })
 })
 
@@ -144,7 +150,13 @@ const SkillLevelsType = new GraphQLObjectType({
     description: "Difficulty level of the movement (beginner, intermediate, and advanced",
     fields: () => ({
         id: { type: GraphQLNonNull(GraphQLInt) },
-        level: { type: GraphQLNonNull(GraphQLString) }
+        level: { type: GraphQLNonNull(GraphQLString) },
+        movements: {
+            type: new GraphQLList(MovementsType),
+            resolve: (level) => {
+                return movements.filter(movement => level.id === movement.skillLevelType)
+            }
+        }
     })
 })
 
@@ -205,15 +217,25 @@ const RootQueryType = new GraphQLObjectType({
             description: 'List of all Exercises',
             resolve: () => exercises
         },
-        targetMuscle: {
+        targetMuscles: {
             type: new GraphQLList(TargetMusclesType),
             description: 'List of all target muscles',
             resolve: () => targetMuscles
         },
-        movementPattern: {
+        movementPatterns: {
             type: new GraphQLList(MovementPatternsType),
             description: 'List of all movement pattern',
             resolve: () => movementPatterns 
+        },
+        equipments: {
+            type: new GraphQLList(EquipmentsType),
+            description: 'List of all equipments',
+            resolve: () => equipments
+        },
+        skillLevels: {
+            type: new GraphQLList(SkillLevelsType),
+            description: 'List of all skill levels',
+            resolve: () => skillLevels
         }
     })
 })
