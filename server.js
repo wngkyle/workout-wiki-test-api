@@ -365,9 +365,22 @@ const RootMutationType = new GraphQLObjectType({
                 }
             }
         },
-        
-
-
+        addDescription: {
+            type: MovementsType,
+            description: "Add a description",
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) },
+                description: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: (parent, args) => {
+                movementIndex = movements.findIndex((movement) => movement.name === args.name)
+                if (movementIndex === -1) {
+                    return null
+                }
+                movements[movementIndex].description = args.description
+                return movements[movementIndex]
+            }
+        }
     })
 })
 
