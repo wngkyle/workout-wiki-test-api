@@ -300,14 +300,76 @@ const RootMutationType = new GraphQLObjectType({
                 movements.push(movement)
                 return movement
             }
-        }
+        },
+        addExercise: {
+            type: ExercisesType,
+            description: 'Add an exercise',
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) },
+            },
+            resolve: (parent, args) => {
+                if ((exercises.find((exercise) => exercise.name === args.name)) === undefined) {
+                    const exercise = { id: exercises.length + 1, name: args.name }
+                    exercises.push(exercise)
+                    return exercise
+                } else {
+                   return exercises[exercises.findIndex((exercise) => exercise.name === args.name)]
+                } 
+            }
+        },
+        addTargetMuscle: {
+            type: TargetMusclesType,
+            description: 'Add an target muscle',
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) },
+            },
+            resolve: (parent, args) => {
+                if ((targetMuscles.find((targetMuscle) => targetMuscle.name === args.name)) === undefined) {
+                    const targetMuscle = { id: targetMuscles.length + 1, name: args.name } 
+                    targetMuscles.push(targetMuscle)
+                    return targetMuscle
+                } else {
+                    return targetMuscles[targetMuscles.findIndex((targetMuscle) => targetMuscle.name === args.name)]
+                }
+            }
+        },
+        addMovementPattern: {
+            type: MovementPatternsType,
+            description: 'Add an movement pattern',
+            args: {
+                pattern: { type: GraphQLNonNull(GraphQLString) },
+            },
+            resolve: (parent, args) => {
+                if ((movementPatterns.find((movementPattern) => movementPattern.pattern === args.pattern)) === undefined) {
+                    const movementPattern = { id: movementPatterns.length + 1, pattern: args.pattern } 
+                    targetMuscles.push(movementPattern)
+                    return movementPattern
+                } else {
+                    return movementPatterns[movementPatterns.findIndex((movementPattern) => movementPattern.pattern === args.pattern)]
+                }
+            }
+        },
+        addEquipment: {
+            type: EquipmentsType,
+            description: "Add an equipment",
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: (parent, args) => {
+                if ((equipments.find((equipment) => equipment.name === args.name)) === undefined) {
+                    const equipment = { id: equipments.length + 1, name: args.name } 
+                    targetMuscles.push(equipment)
+                    return equipment
+                } else {
+                    return equipments[equipments.findIndex((equipment) => equipment.name === args.name)]
+                }
+            }
+        },
+        
+
+
     })
 })
-
-// { id: 1, name: 'Crunch', exerciseType: 1, targetMuscleType: 1, movementPatternType: 1, equipmentType: 1, skillLevelType: 2, description: 'This is crunch' },
-
-
-
 
 
 const schema = new GraphQLSchema({
