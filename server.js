@@ -397,3 +397,5 @@ app.listen(3000, () => console.log('Server Running'))
 
 
 
+// Type "$ npm run devStart" to run the program
+// Type "http://localhost:3000/graphql?" into browser search bar to open GraphiQL  
